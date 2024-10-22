@@ -9,5 +9,6 @@ main: $(objects)
 main.o: main.cpp
 
 .PHONY : clean
-clean: 
-	rm main $(objects)
+clean:
+	rm -f main $(objects)
+	rm -f *.exe
