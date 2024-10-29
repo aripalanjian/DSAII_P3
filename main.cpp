@@ -1,9 +1,19 @@
-#include "adjacencymatrix.hpp"
+/***************************************************************
+  Student Name: Ari Palanjian
+  File Name: main.cpp
+  Project 3
+
+  Driver program to simulate Traveling Salesman Problem
+***************************************************************/
+#include "brute.hpp"
+#include "genetic.hpp"
 #include <iostream>
+
+#include <time.h>
 
 #define NUMELEMENTS 20
 
-void getInput(int* cities, int* tours, int* generations, double* percentGenerationMutation){
+void getInput(int* cities, int* tours, int* generations, int* percentGenerationMutation){
     std::cout << "Number of cities to run: ";    
     std::cin >> *cities;
     std::cout << "Number of tours: ";    
@@ -14,75 +24,30 @@ void getInput(int* cities, int* tours, int* generations, double* percentGenerati
     std::cin >> *percentGenerationMutation;
 }
 
-template<typename T>
-void swap(T* a, T* b){
-    T* tmp = a;
-    a = b;
-    b = tmp;
-}
-
-template<typename T>
-void print1Darr(T* arr, int size){
-    std::cout << "[\n\t";
-    for(int i = 0; i < size; i++){
-        if (i == size - 1){
-            std::cout << arr[i];
-        } else {
-            std::cout << arr[i] << ", ";
-        }
-
-        if ((i+1)%10 == 0 && i != size - 1){
-            std::cout << "\n\t";
-        }
-    }
-    std::cout << "\n]\n";
-}
-
-void perm1(int s[]){
-    int m, k, p , q, i;
-
-    m = NUMELEMENTS-2;
-    while(s[m]>s[m+1]){
-        m = m - 1;
-    }
-
-    k = NUMELEMENTS-1;
-    while(s[m] > s[k]){
-        k = k - 1;
-    }
-    swap(&m,&k);
-
-    p = m + 1;
-    q = NUMELEMENTS-1;
-    while(p < q){
-        swap(&p,&q);
-        p++;
-        q--;
-    }
-
-    print1Darr(s, NUMELEMENTS);
+void ouput(int cities, double bruteBest, time_t computationTimeSBrute, long computationTimeNSBrute,
+    double genBest, time_t computationTimeSGen, long computationTimeNSGen){
+    using std::cout;
+    cout << "Number of cities: " << cities << "\n";
+    cout << "Brute force optimal: " << bruteBest << "\n";
+    cout << "Brute force time: " << computationTimeSBrute << "." << computationTimeNSBrute << "s\n";
+    cout << "Genetic optimal: " << genBest << "\n";
+    cout << "Genetic time: " << computationTimeSGen << "." << computationTimeNSGen << "s\n";
+    cout << "Percent optimal: " << int(genBest/bruteBest * 100) << "\n";
 }
 
 int main(){
-    AdjacencyMatrix adjMatrix("res/distances.txt");
-    // adjMatrix.print();
+    int cities, tours, generations, percentageGenerationMutation;
+    getInput(&cities, &tours, &generations, &percentageGenerationMutation);
 
-    // int cities, tours, generations;
-    // double percentageGenerationMutation;
-    // getInput(&cities, &tours, &generations, &percentageGenerationMutation);
+    Brute b = Brute(cities);
+    b.run();
+    double bruteBest = b.getBest();
+
+    Genetic g = Genetic(cities, tours, generations, percentageGenerationMutation, bruteBest);
+    g.run();
+
+    ouput(cities, bruteBest, b.getComputationTimeS(), b.getComputationTimeNS(),
+        g.getBest(), g.getComputationTimeS(), g.getComputationTimeNS());
 
     return 0;
 }
-
-
-/*
-
-When your program runs, it will interactively get the following information from the user:
-
-the number of cities to run
-
-how many individual tours are in a given generation
-
-how many generations to run
-what percentage of a generation should be comprised of mutations
-*/

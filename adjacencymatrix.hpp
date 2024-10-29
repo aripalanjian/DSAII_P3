@@ -1,3 +1,10 @@
+/***************************************************************
+  Student Name: Ari Palanjian
+  File Name: adjacencymatrix.hpp
+  Project 3
+
+  Class to store edge weight data in a 2D array
+***************************************************************/
 #ifndef ADJACENCYMATRIX_HPP
 #define ADJACENCYMATRIX_HPP
 

@@ -2,3 +2,8 @@
 /test
 *.exe
 *.o
+commentedoutcode.cpp
+*.zip
+*.gsheet
+*.xlsx
+*.docx

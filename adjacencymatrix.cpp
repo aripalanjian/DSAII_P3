@@ -1,3 +1,10 @@
+/***************************************************************
+  Student Name: Ari Palanjian
+  File Name: adjacencymatrix.cpp
+  Project 3
+
+  Member Function Definitions for AdjacencyMatrix class
+***************************************************************/
 #include "adjacencymatrix.hpp"
 #include <fstream>
 #include <iostream>
